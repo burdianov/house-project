@@ -1,18 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent } from 'react';
 import Link from 'next/link';
-// import { useAuth } from "src/auth/useAuth";
 
-interface IProps {
-  children: ReactNode;
-}
+import { useAuth } from '../auth/useAuth';
 
-const Layout: FunctionComponent<IProps> = ({ children }: IProps) => {
-  const authenticated = false;
-
-  const logout = () => {
-    return null;
-  };
+const Layout: FunctionComponent = ({ children }) => {
+  const { user, authenticated, logout } = useAuth();
 
   return (
     <div className="bg-gray-900 max-w-screen-2xl mx-auto text-white">
