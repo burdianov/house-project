@@ -34,7 +34,7 @@ const Layout: FunctionComponent = ({ children }) => {
           )}
         </div>
       </nav>
-      <main className="screen-height-full-less-nav">{children}</main>
+      <main className="screen-min-height-full-less-nav">{children}</main>
     </div>
   );
 };

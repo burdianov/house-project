@@ -19,6 +19,10 @@ input {
   z-index: 1;
 }
 
-.screen-height-full-less-nav {
+.screen-min-height-full-less-nav {
   min-height: calc(100vh - 64px);
+}
+
+.screen-max-height-full-less-nav {
+  max-height: calc(100vh - 64px);
 }
