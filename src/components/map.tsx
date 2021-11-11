@@ -10,7 +10,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 interface IProps {}
 
 const Map = ({}: IProps) => {
-  const mapRef = useRef<ReactMapGL | null>(null);
+  const mapRef = useRef(null);
   const [viewport, setViewport] = useState<ViewState>({
     latitude: 43,
     longitude: -79,
@@ -27,7 +27,7 @@ const Map = ({}: IProps) => {
         onViewportChange={(nextViewport: ViewState) =>
           setViewport(nextViewport)
         }
-        ref={(instance) => (mapRef.current = instance)}
+        ref={mapRef}
         minZoom={5}
         maxZoom={15}
         mapStyle="mapbox://styles/leighhalliday/ckhjaksxg0x2v19s1ovps41ef"
