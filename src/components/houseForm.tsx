@@ -16,11 +16,12 @@
 // import { CreateSignatureMutation } from "src/generated/CreateSignatureMutation";
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { SearchBox } from './searchBox';
 
 interface IFormData {
   address: string;
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
   bedrooms: string;
   image: FileList;
 }
@@ -39,6 +40,8 @@ const HouseForm = ({}: IProps) => {
     defaultValues: {}
   });
 
+  const address = watch('address');
+
   useEffect(() => {
     register('address', { required: 'Please enter your address' });
     register('latitude', { required: true, min: -90, max: 90 });
@@ -52,16 +55,27 @@ const HouseForm = ({}: IProps) => {
     handleCreate(data);
   };
 
+  const onSelectAddress = (
+    address: string,
+    latitude: number | null,
+    longitude: number | null
+  ) => {
+    setValue('address', address);
+    setValue('latitude', latitude);
+    setValue('longitude', longitude);
+  };
+
   return (
     <form className="mx-auto max-w-xl py-4" onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-xl">Add a New House</h1>
 
       <div className="mt-4">
-        <label htmlFor="search" className="block">
+        <label htmlFor="search" className="block mb-1">
           Search for Your Address
         </label>
-
+        <SearchBox onSelectAddress={onSelectAddress} defaultValue="" />
         {errors.address && <p>{errors.address.message}</p>}
+        <h2>{address}</h2>
       </div>
     </form>
   );
