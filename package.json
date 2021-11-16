@@ -10,9 +10,7 @@
     "codegen:watch": "yarn codegen --watch",
     "db:init": "yarn prisma init",
     "db:generate": "yarn prisma generate",
-    "db:migrate:new": "yarn prisma migrate save --experimental",
-    "db:migrate:up": "yarn prisma migrate up --experimental",
-    "db:migrate:down": "yarn prisma migrate down --experimental"
+    "db:migrate": "yarn prisma migrate dev --name init"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
