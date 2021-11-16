@@ -26,3 +26,9 @@ input {
 .screen-max-height-full-less-nav {
   max-height: calc(100vh - 64px);
 }
+
+@layer components {
+  .error-message {
+    @apply text-red-400;
+  }
+}
