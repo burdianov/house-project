@@ -4,6 +4,31 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 
 import { SearchBox } from './searchBox';
+import { axiosCall } from '../../hooks/useAxios';
+
+interface IUploadImageResponse {
+  secure_url: string;
+}
+
+async function uploadImage(
+  image: File,
+  signature: string,
+  timestamp: number
+): Promise<IUploadImageResponse> {
+  const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+  const formData = new FormData();
+  formData.append('file', image);
+  formData.append('signature', signature);
+  formData.append('timestamp', timestamp.toString());
+  formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_KEY ?? '');
+
+  const response = await fetch(url, {
+    method: 'post',
+    body: formData
+  });
+
+  return response.json();
+}
 
 interface IFormData {
   address: string;
@@ -28,6 +53,8 @@ const HouseForm = ({}: IProps) => {
     defaultValues: {}
   });
 
+  const [loading, setLoading] = useState(false);
+
   const address = watch('address');
 
   useEffect(() => {
@@ -37,7 +64,19 @@ const HouseForm = ({}: IProps) => {
   }, [register]);
 
   const handleCreate = async (data: IFormData) => {
-    console.log({ data });
+    setLoading(true);
+
+    const response = await axiosCall({
+      method: 'get',
+      url: '/api/image'
+    });
+
+    if (response.data) {
+      const { signature, timestamp } = response.data;
+
+      const imageData = await uploadImage(data.image[0], signature, timestamp);
+    }
+    setLoading(false);
   };
 
   const onSubmit = (data: IFormData) => {

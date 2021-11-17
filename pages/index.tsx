@@ -9,7 +9,7 @@ export default function Home() {
 
   const { response, loading, error } = useAxios({
     method: 'get',
-    url: '/houses'
+    url: '/api/houses'
   });
 
   useEffect(() => {

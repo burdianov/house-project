@@ -6,8 +6,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "apollo client:codegen --target typescript --localSchemaFile schema.gql --outputFlat --includes \"{pages,src}/**\" --excludes \"src/generated/**\" src/generated",
-    "codegen:watch": "yarn codegen --watch",
     "db:init": "yarn prisma init",
     "db:migrate": "yarn prisma migrate dev --name migr_name",
     "db:generate": "yarn prisma generate"

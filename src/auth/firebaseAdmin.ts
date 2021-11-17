@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next';
 import * as admin from 'firebase-admin';
 
-const verifyIdToken = (token: string) => {
+export const verifyIdToken = (token: string) => {
   const firebasePrivateKey: string = process.env.FIREBASE_PRIVATE_KEY ?? '';
 
   if (!admin.apps.length) {
