@@ -3,9 +3,9 @@ import { useEffect, useState, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 import { SearchBox } from './searchBox';
-import { axiosCall } from '../../hooks/useAxios';
 import { useAuth } from '../auth/useAuth';
 
 interface IUploadImageResponse {
@@ -15,12 +15,11 @@ interface IUploadImageResponse {
 async function createHouse(data: IHouseData) {
   try {
     const url = '/api/houses';
-    const response = await fetch(url, {
-      method: 'post',
-      body: JSON.stringify(data)
+    const response = axios.post(url, {
+      data
     });
 
-    return response.json();
+    return response;
   } catch (err) {
     console.log({ err });
   }
@@ -95,10 +94,7 @@ const HouseForm = ({}: IProps) => {
   const handleCreate = async (data: IFormData) => {
     setLoading(true);
 
-    const response = await axiosCall({
-      method: 'get',
-      url: '/api/image'
-    });
+    const response = await axios.get('/api/image');
 
     if (response.data) {
       const { signature, timestamp } = response.data;
@@ -114,8 +110,10 @@ const HouseForm = ({}: IProps) => {
         bedrooms: data.bedrooms
       });
 
-      if (houseData?.id) {
-        router.push(`/houses/${houseData.id}`);
+      console.log({ houseData });
+
+      if (houseData?.data.id) {
+        router.push(`/houses/${houseData.data.id}`);
       } else {
         // TODO: error handling
       }

@@ -40,25 +40,3 @@ const useAxios = ({
 };
 
 export default useAxios;
-
-interface AxiosCallResponse {
-  data?: any;
-  error?: string;
-  loading?: boolean;
-}
-
-export const axiosCall = async ({
-  url,
-  method,
-  body = null,
-  headers = null
-}: UseAxiosProps): Promise<AxiosCallResponse> => {
-  console.log({ body });
-  return await axios[method](url, JSON.parse(headers), JSON.parse(body))
-    .then((res) => {
-      return { data: res.data };
-    })
-    .catch((error) => {
-      return { error };
-    });
-};

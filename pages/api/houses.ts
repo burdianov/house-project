@@ -20,11 +20,14 @@ const ncOptions = {
 
 const handler = nc(ncOptions);
 
-handler.get(async (_: NextApiRequest, res: NextApiResponse) => {
+handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    if (req.query?.id) {
+      return res.status(200).json({ id: req.query.id });
+    }
     return res.status(200).json({ name: 'Volodea' });
   } catch (err) {
-    return res.status(500).json({ msg: 'server error' });
+    return res.status(500).json({ msg: err.message });
   }
 });
 
@@ -61,7 +64,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const parts = image.split('/');
     const result = parts[parts.length - 1];
 
-    const input = JSON.parse(req.body);
+    const input = req.body.data;
 
     const house = await prisma.house.create({
       data: {
