@@ -1,13 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, ChangeEvent } from 'react';
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 
 import { SearchBox } from './searchBox';
 import { axiosCall } from '../../hooks/useAxios';
+import { useAuth } from '../auth/useAuth';
 
 interface IUploadImageResponse {
   secure_url: string;
+}
+
+async function createHouse(data: IHouseData) {
+  try {
+    const url = '/api/houses';
+    const response = await fetch(url, {
+      method: 'post',
+      body: JSON.stringify(data)
+    });
+
+    return response.json();
+  } catch (err) {
+    console.log({ err });
+  }
 }
 
 async function uploadImage(
@@ -16,6 +32,7 @@ async function uploadImage(
   timestamp: number
 ): Promise<IUploadImageResponse> {
   const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+
   const formData = new FormData();
   formData.append('file', image);
   formData.append('signature', signature);
@@ -38,9 +55,21 @@ interface IFormData {
   image: FileList;
 }
 
+interface IHouseData {
+  uid?: string;
+  image: string;
+  address: string;
+  latitude: number | null;
+  longitude: number | null;
+  bedrooms: string;
+}
+
 interface IProps {}
 
 const HouseForm = ({}: IProps) => {
+  const router = useRouter();
+  const { user, authenticated, logout } = useAuth();
+
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string>();
   const {
@@ -75,6 +104,21 @@ const HouseForm = ({}: IProps) => {
       const { signature, timestamp } = response.data;
 
       const imageData = await uploadImage(data.image[0], signature, timestamp);
+
+      const houseData = await createHouse({
+        uid: user?.uid,
+        image: imageData.secure_url,
+        address: data.address,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        bedrooms: data.bedrooms
+      });
+
+      if (houseData?.id) {
+        router.push(`/houses/${houseData.id}`);
+      } else {
+        // TODO: error handling
+      }
     }
     setLoading(false);
   };

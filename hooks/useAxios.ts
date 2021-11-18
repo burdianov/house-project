@@ -53,6 +53,7 @@ export const axiosCall = async ({
   body = null,
   headers = null
 }: UseAxiosProps): Promise<AxiosCallResponse> => {
+  console.log({ body });
   return await axios[method](url, JSON.parse(headers), JSON.parse(body))
     .then((res) => {
       return { data: res.data };
