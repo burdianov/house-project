@@ -7,4 +7,6 @@ const prisma = new PrismaClient({
       : ['warn']
 });
 
-export { prisma, PrismaClient };
+export default prisma;
+
+// export { prisma, PrismaClient };

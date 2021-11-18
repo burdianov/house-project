@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { prisma } from '../../src/prisma';
+import prisma from '../../../src/prisma';
 
 const ncOptions = {
   onError(err, _: NextApiRequest, res: NextApiResponse) {
@@ -22,9 +22,6 @@ const handler = nc(ncOptions);
 
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (req.query?.id) {
-      return res.status(200).json({ id: req.query.id });
-    }
     return res.status(200).json({ name: 'Volodea' });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
