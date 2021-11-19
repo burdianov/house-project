@@ -3,10 +3,10 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../../../src/components/layout';
+import { SingleMap } from './../../../src/components/singleMap';
 // import HouseNav from "src/components/houseNav";
-// import SingleMap from "src/components/singleMap";
 
-interface HouseType {
+export interface HouseType {
   id: number;
   address: string;
   userId: string;
@@ -75,7 +75,9 @@ function HouseData({ id }: { id: string }) {
           </div>
           <p>{house.bedrooms} bedroom houses</p>
         </div>
-        <div className="sm:w-full md:w-1/2">SingleMap</div>
+        <div className="sm:w-full md:w-1/2">
+          <SingleMap house={house} />
+        </div>
       </div>
     </Layout>
   );
