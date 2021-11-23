@@ -3,17 +3,17 @@ import Link from 'next/link';
 import { Image } from 'cloudinary-react';
 import ReactMapGL, { Marker, Popup, ViewState } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-// import { useLocalState } from "src/utils/useLocalState";
-// import { HousesQuery_houses } from "src/generated/HousesQuery";
+
 // import { SearchBox } from "./searchBox";
+import { useLocalState } from './../utils/useLocalState';
 
 interface IProps {}
 
 const Map = ({}: IProps) => {
   const mapRef = useRef(null);
-  const [viewport, setViewport] = useState<ViewState>({
-    latitude: 43,
-    longitude: -79,
+  const [viewport, setViewport] = useLocalState<ViewState>('viewport', {
+    latitude: 47.01,
+    longitude: 28.86,
     zoom: 10
   });
 

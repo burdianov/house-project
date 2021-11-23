@@ -14,6 +14,11 @@ export interface HouseType {
   latitude: number;
   longitude: number;
   bedrooms: number;
+  nearby: {
+    id: number;
+    latitude: number;
+    longitude: number;
+  };
   // createdAt DateTime @default(now())
   // updatedAt DateTime @updatedAt
 }
@@ -29,6 +34,7 @@ export default function ShowHouse() {
 
 function HouseData({ id }: { id: string }) {
   const [house, setHouse] = useState<HouseType>();
+  const [nearby, setNearby] = useState<HouseType[] | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -37,7 +43,8 @@ function HouseData({ id }: { id: string }) {
       const response = await axios.get(`/api/houses/${id}`, {
         params: { id }
       });
-      setHouse(response.data);
+      setHouse(response.data.house);
+      setNearby(response.data.nearby);
       setLoading(false);
     };
     getHouse();
@@ -56,7 +63,7 @@ function HouseData({ id }: { id: string }) {
         <div>Unable to load house</div>
       </Layout>
     );
-  console.log({ house });
+
   return (
     <Layout>
       <div className="sm:block md:flex">
@@ -76,7 +83,7 @@ function HouseData({ id }: { id: string }) {
           <p>{house.bedrooms} bedroom houses</p>
         </div>
         <div className="sm:w-full md:w-1/2">
-          <SingleMap house={house} />
+          <SingleMap house={house} nearby={nearby} />
         </div>
       </div>
     </Layout>
