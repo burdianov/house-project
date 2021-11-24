@@ -7,9 +7,11 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 // import { SearchBox } from "./searchBox";
 import { useLocalState } from './../utils/useLocalState';
 
-interface IProps {}
+interface IProps {
+  setDataBounds: (bounds: string) => void;
+}
 
-const Map = ({}: IProps) => {
+const Map = ({ setDataBounds }: IProps) => {
   const mapRef = useRef(null);
   const [viewport, setViewport] = useLocalState<ViewState>('viewport', {
     latitude: 47.01,
@@ -31,6 +33,18 @@ const Map = ({}: IProps) => {
         minZoom={5}
         maxZoom={15}
         mapStyle="mapbox://styles/leighhalliday/ckhjaksxg0x2v19s1ovps41ef"
+        onLoad={() => {
+          if (mapRef.current) {
+            const bounds = mapRef.current.getMap().getBounds();
+            setDataBounds(JSON.stringify(bounds.toArray()));
+          }
+        }}
+        onInteractionStateChange={(extra) => {
+          if (!extra.isDragging && mapRef.current) {
+            const bounds = mapRef.current.getMap().getBounds();
+            setDataBounds(JSON.stringify(bounds.toArray()));
+          }
+        }}
       ></ReactMapGL>
     </div>
   );

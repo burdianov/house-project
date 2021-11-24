@@ -1,36 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 
 import Layout from '../src/components/layout';
 import Map from './../src/components/map';
-import useAxios from '../hooks/useAxios';
+import { useLocalState } from './../src/utils/useLocalState';
+
+type BoundsArray = [[number, number], [number, number]];
 
 export default function Home() {
-  const [houses, setHouses] = useState();
-
-  const { response, loading, error } = useAxios({
-    method: 'get',
-    url: '/api/houses'
-  });
-
-  useEffect(() => {
-    if (response) {
-      setHouses(response);
-    }
-  }, [response]);
+  const [dataBounds, setDataBounds] = useLocalState<string>(
+    'bounds',
+    '[[0, 0], [0, 0]]'
+  );
+  const [debouncedDataBounds] = useDebounce(dataBounds, 200);
 
   return (
     <Layout>
       <div className="flex">
         <div className="w-1/2 pb-4 screen-max-height-full-less-nav">
           HouseList
-          {loading ? (
-            'Loading...'
-          ) : (
-            <pre>{JSON.stringify(houses, null, 2)}</pre>
-          )}
         </div>
         <div className="w-1/2">
-          <Map />
+          <Map setDataBounds={setDataBounds} />
         </div>
       </div>
     </Layout>
