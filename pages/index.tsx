@@ -7,6 +7,7 @@ import { useLocalState } from './../src/utils/useLocalState';
 import { useEffect, useState } from 'react';
 import { HouseType } from './houses/[id]/index';
 import { useLastData } from './../src/utils/useLastData';
+import HouseList from './../src/components/houseList';
 
 type BoundsArray = [[number, number], [number, number]];
 
@@ -39,7 +40,6 @@ export default function Home() {
   useEffect(() => {
     const getHouse = async () => {
       setLoading(true);
-      console.log({ debouncedDataBounds });
       const response = await axios.get(`/api/houses`, {
         params: { bounds: parseBounds(debouncedDataBounds) }
       });
@@ -62,16 +62,14 @@ export default function Home() {
     );
   }
 
-  console.log({ lastData });
-
   return (
     <Layout>
       <div className="flex">
         <div className="w-1/2 pb-4 screen-max-height-full-less-nav">
-          HouseList
+          <HouseList houses={lastData || []} />
         </div>
         <div className="w-1/2">
-          <Map setDataBounds={setDataBounds} />
+          <Map setDataBounds={setDataBounds} houses={lastData || []} />
         </div>
       </div>
     </Layout>

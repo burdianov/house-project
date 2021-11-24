@@ -110,8 +110,6 @@ const HouseForm = ({}: IProps) => {
         bedrooms: data.bedrooms
       });
 
-      console.log({ houseData });
-
       if (houseData?.data.id) {
         router.push(`/houses/${houseData.data.id}`);
       } else {

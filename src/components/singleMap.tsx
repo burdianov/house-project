@@ -5,6 +5,7 @@ import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { HouseType } from './../../pages/houses/[id]/index';
+import { ViewState } from 'react-map-gl';
 
 interface IProps {
   house: HouseType;
@@ -24,7 +25,9 @@ export const SingleMap = ({ house, nearby }: IProps) => {
         {...viewport}
         width="100%"
         height="calc(100vh - 64px)"
-        onViewportChange={(nextViewport) => setViewport(nextViewport)}
+        onViewportChange={(nextViewport: ViewState) =>
+          setViewport(nextViewport)
+        }
         mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
         scrollZoom={false}
         minZoom={8}
