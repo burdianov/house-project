@@ -22,11 +22,25 @@ const handler = nc(ncOptions);
 
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    return res.status(200).json({ name: 'Volodea' });
+    const bounds: BoundsInput = JSON.parse(req.query.bounds as string);
+
+    const houses = await prisma.house.findMany({
+      where: {
+        latitude: { gte: bounds.sw.latitude, lte: bounds.ne.latitude },
+        longitude: { gte: bounds.sw.longitude, lte: bounds.ne.longitude }
+      },
+      take: 50
+    });
+    return res.status(200).json({ houses });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }
 });
+
+interface BoundsInput {
+  sw: CoordinatesInput;
+  ne: CoordinatesInput;
+}
 
 interface CoordinatesInput {
   latitude: number;
