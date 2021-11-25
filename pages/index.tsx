@@ -26,6 +26,7 @@ const parseBounds = (boundsString: string) => {
 };
 
 export default function Home() {
+  const [highlightedId, setHighlightedId] = useState<number | null>(null);
   const [houses, setHouses] = useState<HouseType[]>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -66,10 +67,17 @@ export default function Home() {
     <Layout>
       <div className="flex">
         <div className="w-1/2 pb-4 screen-max-height-full-less-nav">
-          <HouseList houses={lastData || []} />
+          <HouseList
+            houses={lastData || []}
+            setHighlightedId={setHighlightedId}
+          />
         </div>
         <div className="w-1/2">
-          <Map setDataBounds={setDataBounds} houses={lastData || []} />
+          <Map
+            setDataBounds={setDataBounds}
+            houses={lastData || []}
+            highlightedId={highlightedId}
+          />
         </div>
       </div>
     </Layout>

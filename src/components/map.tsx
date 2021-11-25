@@ -12,9 +12,10 @@ import { HouseType } from './../../pages/houses/[id]/index';
 interface IProps {
   setDataBounds: (bounds: string) => void;
   houses: HouseType[];
+  highlightedId: number | null;
 }
 
-const Map = ({ setDataBounds, houses }: IProps) => {
+const Map = ({ setDataBounds, houses, highlightedId }: IProps) => {
   const [selected, setSelected] = useState<HouseType | null>(null);
   const mapRef = useRef(null);
   const [viewport, setViewport] = useLocalState<ViewState>('viewport', {
@@ -57,13 +58,22 @@ const Map = ({ setDataBounds, houses }: IProps) => {
             longitude={house.longitude}
             offsetLeft={-15}
             offsetTop={-15}
+            className={highlightedId === house.id ? 'marker-active' : ''}
           >
             <button
               className="w-[30px] h-[30px] text-[30px]"
               type="button"
               onClick={() => setSelected(house)}
             >
-              <img src="/home-solid.svg" alt="house" className="w-8" />
+              <img
+                src={
+                  highlightedId === house.id
+                    ? '/home-color.svg'
+                    : '/home-solid.svg'
+                }
+                alt="house"
+                className="w-8"
+              />
             </button>
           </Marker>
         ))}

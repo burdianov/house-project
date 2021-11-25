@@ -5,14 +5,19 @@ import { HouseType } from './../../pages/houses/[id]/index';
 
 interface IProps {
   houses: HouseType[];
+  setHighlightedId: (id: number | null) => void;
 }
 
-export default function HouseList({ houses }: IProps) {
+export default function HouseList({ houses, setHighlightedId }: IProps) {
   return (
     <>
       {houses.map((house) => (
         <Link key={house.id} href={`/houses/${house.id}`}>
-          <a className="px-6 pt-4 cursor-pointer flex flex-wrap">
+          <a
+            className="px-6 pt-4 cursor-pointer flex flex-wrap"
+            onMouseEnter={() => setHighlightedId(house.id)}
+            onMouseLeave={() => setHighlightedId(null)}
+          >
             <div className="sm:w-full md:w-1/2">
               <Image
                 src={house.image}
